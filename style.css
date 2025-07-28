@@ -1,79 +1,125 @@
+/* General Body Styles */
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
-    background-color: #f8f9fa;
-    color: #212529;
+    background-color: #000;
+    color: #fff;
 }
 
-.hero-container {
-    height: 100vh;
+/* Fixed Header Navigation */
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    background-color: #ffffff;
-}
-
-header {
-    width: 100%;
-    max-width: 1200px;
-    padding: 20px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 20px 50px;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    z-index: 100;
     box-sizing: border-box;
 }
 
 .logo {
     font-weight: 700;
-    font-size: 1.2em;
+    font-size: 1.2rem;
 }
 
-.strengths-nav a {
+.main-header nav a {
+    color: #fff;
     text-decoration: none;
-    color: #495057;
-    margin: 0 15px;
-    font-weight: 500;
-    transition: color 0.3s ease;
+    margin-left: 30px;
+    font-weight: 600;
+    transition: opacity 0.3s;
 }
 
-.strengths-nav a:hover {
-    color: #007bff;
+.main-header nav a:hover {
+    opacity: 0.7;
 }
 
-.hero-content {
-    flex-grow: 1;
+/* Cinematic Scene Styles */
+.scene {
+    height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 5%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Scene 1: Full-screen Video Hero */
+#home .content {
+    z-index: 2;
+}
+
+#home h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
     max-width: 800px;
-    padding: 0 20px;
 }
 
-h1 {
-    font-size: 3.5em;
-    font-weight: 700;
-    margin-bottom: 0.5em;
+#home .tagline {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
 }
 
-p {
-    font-size: 1.2em;
-    line-height: 1.6;
-    margin-bottom: 2em;
-    color: #6c757d;
+.background-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    opacity: 0.5;
 }
 
-.cta-button {
-    background-color: #007bff;
-    color: white;
-    padding: 15px 30px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: 700;
-    transition: background-color 0.3s ease;
+/* Scene 2: Text Feature */
+.text-feature {
+    max-width: 700px;
 }
 
-.cta-button:hover {
-    background-color: #0056b3;
+.text-feature h2 {
+    font-size: 3rem;
+}
+
+.text-feature p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Scene 3: Split Layout */
+#therapprove-highlight {
+    background-color: #111; /* Different background to break up the scroll */
+}
+
+.split-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    gap: 50px;
+    text-align: left;
+}
+
+.split-text {
+    flex: 1;
+}
+
+.split-text h3 {
+    font-size: 2.5rem;
+}
+
+.split-visual {
+    flex: 1;
+}
+
+.split-visual img {
+    width: 100%;
+    border-radius: 10px;
 }
