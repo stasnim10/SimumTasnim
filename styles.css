@@ -2544,3 +2544,10 @@ html {
 .project-links a:hover {
     color: var(--primary-dark);
 }
+/*
+  Final Fix: Hide the redundant floating Calendly pop-up widget
+  that appears at the bottom of the page.
+*/
+.calendly-inline-widget .calendly-popup {
+  display: none !important;
+}
