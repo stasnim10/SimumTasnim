@@ -1,0 +1,27 @@
+{
+  "name": "Simum Tasnim - Portfolio",
+  "short_name": "Simum Portfolio",
+  "description": "MBA candidate specializing in consulting and product management. Unlocking $2M in cost savings through data-driven strategic solutions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["business", "portfolio", "professional"],
+  "icons": [
+    {
+      "src": "assets/images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

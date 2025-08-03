@@ -787,3 +787,355 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(calendlyWidget, { childList: true, subtree: true });
   }
 });
+
+// Theme Toggle Functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  const body = document.body;
+  
+  // Check for saved theme preference or default to light mode
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  
+  // Apply saved theme
+  if (savedTheme === 'dark') {
+    body.setAttribute('data-theme', 'dark');
+    themeIcon.className = 'fas fa-sun';
+  } else {
+    body.setAttribute('data-theme', 'light');
+    themeIcon.className = 'fas fa-moon';
+  }
+  
+  // Theme toggle event listener
+  themeToggle.addEventListener('click', function() {
+    const currentTheme = body.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    // Update theme
+    body.setAttribute('data-theme', newTheme);
+    
+    // Update icon with smooth transition
+    themeIcon.style.transform = 'rotate(180deg)';
+    
+    setTimeout(() => {
+      if (newTheme === 'dark') {
+        themeIcon.className = 'fas fa-sun';
+      } else {
+        themeIcon.className = 'fas fa-moon';
+      }
+      themeIcon.style.transform = 'rotate(0deg)';
+    }, 150);
+    
+    // Save preference
+    localStorage.setItem('theme', newTheme);
+  });
+});
+// Enhanced Scroll Animations
+document.addEventListener('DOMContentLoaded', function() {
+  // Create intersection observer for enhanced animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+  
+  const animationObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        // Stop observing once animated
+        animationObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+  
+  // Observe all animation elements EXCEPT project panes (they have their own visibility system)
+  const animationElements = document.querySelectorAll(
+    '.fade-in-up-enhanced:not(.project-pane), .slide-in-left, .slide-in-right, .scale-in'
+  );
+  
+  animationElements.forEach(el => {
+    animationObserver.observe(el);
+  });
+  
+  // Add enhanced hover effects to project cards, but don't interfere with visibility
+  const projectCards = document.querySelectorAll('.project-pane');
+  projectCards.forEach(card => {
+    card.classList.add('hover-lift');
+  });
+  
+  // Add floating animation to hero buttons
+  const heroButtons = document.querySelectorAll('.hero-buttons .btn');
+  heroButtons.forEach((btn, index) => {
+    btn.classList.add('float-animation');
+    btn.style.animationDelay = `${index * 0.5}s`;
+  });
+});
+// Scroll Progress Indicator
+document.addEventListener('DOMContentLoaded', function() {
+  const scrollProgress = document.getElementById('scroll-progress');
+  
+  function updateScrollProgress() {
+    const scrollTop = window.pageYOffset;
+    const docHeight = document.body.scrollHeight - window.innerHeight;
+    const scrollPercent = (scrollTop / docHeight) * 100;
+    
+    scrollProgress.style.width = scrollPercent + '%';
+  }
+  
+  window.addEventListener('scroll', updateScrollProgress);
+  updateScrollProgress(); // Initial call
+});
+// Advanced Mobile Features
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // PWA Service Worker Registration
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((registration) => {
+          console.log('SW registered: ', registration);
+        })
+        .catch((registrationError) => {
+          console.log('SW registration failed: ', registrationError);
+        });
+    });
+  }
+  
+  // PWA Install Prompt - Temporarily disabled
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Install prompt disabled to prevent visual issues
+    console.log('PWA install prompt available but disabled');
+  });
+  
+  // Smart Navigation - Hide on scroll down, show on scroll up
+  let lastScrollTop = 0;
+  const navbar = document.querySelector('.nav-smart');
+  
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      
+      if (scrollTop > lastScrollTop && scrollTop > 100) {
+        // Scrolling down
+        navbar.classList.add('hidden');
+      } else {
+        // Scrolling up
+        navbar.classList.remove('hidden');
+      }
+      
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    }, { passive: true });
+  }
+  
+  // Enhanced Project Navigation with Swipe Gestures - Safe version
+  const projectPanes = document.querySelectorAll('.project-pane');
+  const projectTabs = document.querySelectorAll('.tab-pill');
+  let currentProject = 0;
+  const projects = ['launchpad', 'transformation', 'blueprint', 'scheduling'];
+  
+  // Touch/Swipe handling - Safe implementation
+  let startX = 0;
+  let startY = 0;
+  let isSwipeGesture = false;
+  
+  const projectContainer = document.querySelector('.project-content-panes');
+  
+  if (projectContainer && 'ontouchstart' in window) {
+    projectContainer.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      isSwipeGesture = false;
+    }, { passive: true });
+    
+    projectContainer.addEventListener('touchmove', (e) => {
+      if (!startX || !startY) return;
+      
+      const diffX = startX - e.touches[0].clientX;
+      const diffY = startY - e.touches[0].clientY;
+      
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        isSwipeGesture = true;
+        e.preventDefault(); // Prevent scrolling
+      }
+    }, { passive: false });
+    
+    projectContainer.addEventListener('touchend', (e) => {
+      if (!isSwipeGesture || !startX) return;
+      
+      const diffX = startX - e.changedTouches[0].clientX;
+      const threshold = 100;
+      
+      if (Math.abs(diffX) > threshold) {
+        if (diffX > 0) {
+          // Swipe left - next project
+          navigateProject('next');
+        } else {
+          // Swipe right - previous project
+          navigateProject('prev');
+        }
+      }
+      
+      startX = 0;
+      startY = 0;
+      isSwipeGesture = false;
+    }, { passive: true });
+  }
+  
+  // Project navigation function
+  function navigateProject(direction) {
+    if (direction === 'next') {
+      currentProject = (currentProject + 1) % projects.length;
+    } else if (direction === 'prev') {
+      currentProject = (currentProject - 1 + projects.length) % projects.length;
+    }
+    
+    const targetProject = projects[currentProject];
+    showProject(targetProject);
+  }
+  
+  function showProject(projectName) {
+    // Update project panes
+    projectPanes.forEach(pane => {
+      if (pane.dataset.project === projectName) {
+        pane.classList.add('visible');
+        pane.style.display = 'block';
+      } else {
+        pane.classList.remove('visible');
+        pane.style.display = 'none';
+      }
+    });
+    
+    // Update tabs
+    projectTabs.forEach(tab => {
+      if (tab.dataset.project === projectName) {
+        tab.classList.add('active');
+      } else {
+        tab.classList.remove('active');
+      }
+    });
+    
+    currentProject = projects.indexOf(projectName);
+  }
+  
+  
+  // Remove only the floating Calendly widget that appears outside the main content
+  function removeFloatingCalendly() {
+    // Target multiple possible floating widget patterns
+    const selectors = [
+      'body > div[class*="lmtWIHO"]',
+      'body > div[class*="sbRR6Vj"]', 
+      'body > div[class*="mOUYF5Z"]',
+      'body > div[class*="_JUGVkf"]',
+      'body > div[class*="_cUP1np"]',
+      'body > div[class*="OGcBAy"]'
+    ];
+    
+    selectors.forEach(selector => {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach(element => {
+        if (element && !element.closest('.card-with-calendar')) {
+          element.remove();
+          console.log('Removed floating Calendly widget:', selector);
+        }
+      });
+    });
+  }
+  
+  // Run immediately
+  removeFloatingCalendly();
+  
+  // Run periodically to catch the floating widget if it appears later
+  setInterval(removeFloatingCalendly, 1000);
+  
+  // Also run when page is fully loaded
+  window.addEventListener('load', removeFloatingCalendly);
+  
+  // Match contact card sizes and widths
+  function matchContactCardSizes() {
+    const contactCard = document.querySelector('.contact-info');
+    const calendarCard = document.querySelector('.card-with-calendar');
+    
+    if (contactCard && calendarCard) {
+      // Reset both cards first
+      calendarCard.style.height = 'auto';
+      calendarCard.style.width = 'auto';
+      contactCard.style.width = 'auto';
+      
+      // Force both to use full grid width
+      contactCard.style.width = '100%';
+      calendarCard.style.width = '100%';
+      
+      // Get the natural height of the contact card
+      const contactHeight = contactCard.offsetHeight;
+      
+      // Apply the same height to the calendar card
+      calendarCard.style.height = contactHeight + 'px';
+      
+      // Ensure both have exactly the same computed width
+      const contactWidth = contactCard.offsetWidth;
+      calendarCard.style.width = contactWidth + 'px';
+      contactCard.style.width = contactWidth + 'px';
+    }
+  }
+  
+  // Run on page load
+  matchContactCardSizes();
+  
+  // Run after window resize
+  window.addEventListener('resize', matchContactCardSizes);
+  
+  // Run after theme change (in case it affects sizing)
+  document.addEventListener('themeChanged', matchContactCardSizes);
+  
+  // Keyboard Navigation Enhancement - Safe
+  document.addEventListener('keydown', (e) => {
+    // Arrow key navigation for projects
+    if (document.activeElement.closest('.projects')) {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        navigateProject('prev');
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        navigateProject('next');
+      }
+    }
+  });
+  
+  // Network Status Awareness
+  if ('connection' in navigator) {
+    const connection = navigator.connection;
+    
+    function updateForConnection() {
+      if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
+        // Reduce animations for slow connections
+        document.body.classList.add('slow-connection');
+      } else {
+        document.body.classList.remove('slow-connection');
+      }
+    }
+    
+    connection.addEventListener('change', updateForConnection);
+    updateForConnection();
+  }
+  
+  // Battery API awareness (experimental)
+  if ('getBattery' in navigator) {
+    navigator.getBattery().then((battery) => {
+      function updateBatteryStatus() {
+        if (battery.level < 0.2 && !battery.charging) {
+          // Reduce animations when battery is low
+          document.body.classList.add('low-battery');
+        } else {
+          document.body.classList.remove('low-battery');
+        }
+      }
+      
+      battery.addEventListener('levelchange', updateBatteryStatus);
+      battery.addEventListener('chargingchange', updateBatteryStatus);
+      updateBatteryStatus();
+    });
+  }
+});
