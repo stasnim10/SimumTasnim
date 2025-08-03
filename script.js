@@ -758,3 +758,32 @@ function initProjectTabs() {
   });
 }
 
+
+// Calendly widget loader handling
+document.addEventListener('DOMContentLoaded', function() {
+  // Hide the loader after Calendly widget has had time to load
+  setTimeout(function() {
+    const loader = document.getElementById('calendly-loader');
+    if (loader) {
+      loader.style.display = 'none';
+    }
+  }, 2000); // 2 seconds should be enough for most connections
+  
+  // Also hide loader when Calendly widget becomes visible (backup method)
+  const calendlyWidget = document.querySelector('.calendly-inline-widget');
+  if (calendlyWidget) {
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'childList' && mutation.target.children.length > 0) {
+          const loader = document.getElementById('calendly-loader');
+          if (loader) {
+            loader.style.display = 'none';
+          }
+          observer.disconnect(); // Stop observing once loaded
+        }
+      });
+    });
+    
+    observer.observe(calendlyWidget, { childList: true, subtree: true });
+  }
+});
