@@ -1364,6 +1364,16 @@ body::after {
 }
 
 .social-icon.sports:hover {
+  background: #00a000;
+  color: white;
+}
+
+.social-icon.travel:hover {
+  background: #007bff;
+  color: white;
+}
+
+.social-icon.sports:hover {
   background: #00a86b;
   color: white;
 }
@@ -3558,3 +3568,103 @@ body > div[class*="_JUGVkf"] {
   display: none !important;
 }
 /* Targeted removal of only floating Calendly widget */
+/* Mobile-specific social icon improvements */
+@media (max-width: 768px) {
+  .social-icons {
+    justify-content: center;
+    gap: 1.5rem; /* More space between icons on mobile */
+    margin-top: 1.5rem;
+  }
+  
+  .social-icon {
+    width: 56px; /* Larger touch targets */
+    height: 56px;
+    background: rgba(255, 255, 255, 0.15) !important; /* More visible background */
+    color: rgba(255, 255, 255, 0.95) !important; /* More visible text */
+    font-size: 1.4rem; /* Larger icons */
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Visible border */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* More prominent shadow */
+  }
+  
+  /* Always show brand colors on mobile (no hover needed) */
+  .social-icon.linkedin {
+    background: rgba(0, 119, 181, 0.2) !important;
+    border-color: rgba(0, 119, 181, 0.4);
+    color: #0077b5 !important;
+  }
+  
+  .social-icon.github {
+    background: rgba(51, 51, 51, 0.2) !important;
+    border-color: rgba(51, 51, 51, 0.4);
+    color: #333 !important;
+  }
+  
+  .social-icon.email {
+    background: rgba(234, 67, 53, 0.2) !important;
+    border-color: rgba(234, 67, 53, 0.4);
+    color: #ea4335 !important;
+  }
+  
+  .social-icon.youtube {
+    background: rgba(255, 0, 0, 0.2) !important;
+    border-color: rgba(255, 0, 0, 0.4);
+    color: #ff0000 !important;
+  }
+  
+  .social-icon.sports {
+    background: rgba(0, 128, 0, 0.2) !important;
+    border-color: rgba(0, 128, 0, 0.4);
+    color: #00a000 !important;
+  }
+  
+  .social-icon.travel {
+    background: rgba(0, 123, 255, 0.2) !important;
+    border-color: rgba(0, 123, 255, 0.4);
+    color: #007bff !important;
+  }
+  
+  /* Touch feedback - brief scale effect when tapped */
+  .social-icon:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* Dark mode mobile social icons */
+@media (max-width: 768px) {
+  [data-theme="dark"] .social-icon {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+  
+  [data-theme="dark"] .social-icon.linkedin {
+    background: rgba(0, 119, 181, 0.3) !important;
+    color: #4fc3f7 !important;
+  }
+  
+  [data-theme="dark"] .social-icon.github {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+  }
+  
+  [data-theme="dark"] .social-icon.email {
+    background: rgba(234, 67, 53, 0.3) !important;
+    color: #ff6b6b !important;
+  }
+  
+  [data-theme="dark"] .social-icon.youtube {
+    background: rgba(255, 0, 0, 0.3) !important;
+    color: #ff5252 !important;
+  }
+  
+  [data-theme="dark"] .social-icon.sports {
+    background: rgba(76, 175, 80, 0.3) !important;
+    color: #4caf50 !important;
+  }
+  
+  [data-theme="dark"] .social-icon.travel {
+    background: rgba(33, 150, 243, 0.3) !important;
+    color: #42a5f5 !important;
+  }
+}
