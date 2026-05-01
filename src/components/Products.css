@@ -1,0 +1,149 @@
+.products-section {
+  position: relative;
+  /* padding handled globally in section classes typically, or add here if needed */
+}
+
+.section-subtitle {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.section-intro {
+  color: var(--color-text);
+  opacity: 0.8;
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.products-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+  margin-top: 4rem;
+}
+
+.product-gallery-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+.product-gallery-item.reverse {
+  direction: rtl;
+}
+
+.product-gallery-item.reverse > * {
+  direction: ltr;
+}
+
+.product-image-container {
+  overflow: hidden;
+  position: relative;
+  background-color: var(--color-surface);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 4px;
+}
+
+.product-image-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--color-border);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+  object-fit: contain;
+  filter: grayscale(30%);
+  transition: transform 1.5s ease, filter 0.5s ease;
+  display: block;
+}
+
+.product-gallery-item:hover .product-image {
+  transform: scale(1.05);
+  filter: grayscale(0%);
+}
+
+.product-year {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent-alt);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.product-title {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.product-desc {
+  font-size: 1.1rem;
+  color: var(--color-text);
+  opacity: 0.8;
+  max-width: 90%;
+  line-height: 1.6;
+}
+
+.product-title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.product-title a:hover {
+  color: var(--color-accent);
+}
+
+.product-visit-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.product-visit-pill:hover {
+  background-color: var(--color-accent-alt);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 992px) {
+  .products-gallery {
+    gap: 6rem;
+  }
+  
+  .product-gallery-item, .product-gallery-item.reverse {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    direction: ltr;
+  }
+  
+  .product-title {
+    font-size: 2rem;
+  }
+}
