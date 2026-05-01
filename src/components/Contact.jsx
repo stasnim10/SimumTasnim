@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Mail } from 'lucide-react';
 import { FaLinkedin, FaGithub, FaYoutube } from 'react-icons/fa';
 import './Contact.css';
 
+const CALENDLY_URL = 'https://calendly.com/tasnimsimum/30min';
+
 const Contact = () => {
+  useEffect(() => {
+    const initWidget = () => {
+      if (window.Calendly) {
+        window.Calendly.initInlineWidget({
+          url: CALENDLY_URL,
+          parentElement: document.querySelector('.calendly-inline-widget'),
+        });
+      }
+    };
+
+    if (window.Calendly) {
+      initWidget();
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.onload = initWidget;
+      document.head.appendChild(script);
+    }
+  }, []);
+
   return (
     <section id="contact" className="contact-section">
       <div className="container">
@@ -56,9 +78,8 @@ const Contact = () => {
             transition={{ duration: 1, delay: 0.2 }}
           >
             <div className="calendly-wrapper">
-               <div 
-                 className="calendly-inline-widget" 
-                 data-url="https://calendly.com/tasnimsimum/30min" 
+               <div
+                 className="calendly-inline-widget"
                  style={{ minWidth: '320px', height: '600px' }}
                ></div>
             </div>
