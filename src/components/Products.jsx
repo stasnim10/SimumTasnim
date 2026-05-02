@@ -10,7 +10,7 @@ const products = [
     description: "Mindfulness & Zikr-tracking app for Muslim users. Focused on daily spiritual habit formation, accessibility, and UX simplicity. Deployed on App Store & Google Play.",
     date: "Launched Jan 2026",
     link: "https://onelink.to/h9968b",
-    media: { type: 'video', src: '/assets/images/products/Zikrotg.MOV' }
+    media: { type: 'video', src: '/assets/images/products/Zikrotg.MOV?v=20260501' }
   },
   {
     tag: "EdTech Web App · Sep 2025",
@@ -18,7 +18,7 @@ const products = [
     description: "Web platform for MBA candidates & aspiring consultants to practice case interviews through structured frameworks, real prompts, and analytics-driven iteration.",
     date: "Launched Sep 2025",
     link: "https://casequestapp.com",
-    media: { type: 'image', src: '/assets/images/products/case-quest.jpg' }
+    media: { type: 'image', src: '/assets/images/products/case-quest.jpg?v=20260501' }
   },
   {
     tag: "AI Web App · Apr 2026",
@@ -39,7 +39,7 @@ const products = [
     link: "https://www.amazon.com/stores/USOTG/page/3DF3FFB3-3953-4F0A-8D31-ACBF0BC864DE?lp_asin=B0GSCXXH65&ref_=ast_bln",
     media: { 
       type: 'image', 
-      src: '/assets/images/products/USOTG-Store.png', 
+      src: '/assets/images/products/USOTG-Store.png?v=20260501',
       clickableLink: "https://www.amazon.com/stores/USOTG/page/3DF3FFB3-3953-4F0A-8D31-ACBF0BC864DE?lp_asin=B0GSCXXH65&ref_=ast_bln" 
     }
   }

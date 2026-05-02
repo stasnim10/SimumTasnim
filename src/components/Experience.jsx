@@ -108,7 +108,7 @@ const experiences = [
       "Owned full lifecycle: product vision → UX flows → sprint delivery → analytics instrumentation → continuous iteration",
     ],
     tags: ["Product Strategy", "UX Design", "iOS/Android", "AI Integration", "Sprint Delivery"],
-    images: ["/assets/images/experience/Founder_Product Developer.jpg"],
+    images: ["/assets/images/experience/Founder_Product Developer.jpg?v=20260501"],
   },
   {
     period: "Oct 2025 – Present",
@@ -128,7 +128,7 @@ const experiences = [
       "Successfully launched two products in April 2026, managing full go-to-market from sourcing to live listing",
     ],
     tags: ["E-Commerce", "Supply Chain", "Brand Building", "Amazon FBA", "P&L Management"],
-    images: ["/assets/images/experience/USOTG_CEO.jpg"],
+    images: ["/assets/images/experience/USOTG_CEO.jpg?v=20260501"],
   },
   {
     period: "Aug 2024 – Present",
@@ -147,7 +147,7 @@ const experiences = [
       "Organized student-teacher meetup events and led academic experience improvement initiatives",
     ],
     tags: ["Leadership", "Coaching", "Student Advocacy", "AI Tools", "Facilitation"],
-    images: ["/assets/images/experience/VP_MBA Team Coach.jpg"],
+    images: ["/assets/images/experience/VP_MBA Team Coach.jpg?v=20260501"],
   },
   {
     period: "Jun – Aug 2025",
@@ -171,9 +171,9 @@ const experiences = [
       { text: "Consulting Reflections", url: "https://www.linkedin.com/pulse/reflecting-my-consulting-internship-projxon-simum-tasnim-lpwxc" }
     ],
     images: [
-      "/assets/images/experience/Strategy_Operations.jpg",
-      "/assets/images/experience/Strategy_Operations 2.jpg",
-      "/assets/images/experience/Strategy_Operations 3.jpg"
+      "/assets/images/experience/Strategy_Operations.jpg?v=20260501",
+      "/assets/images/experience/Strategy_Operations 2.jpg?v=20260501",
+      "/assets/images/experience/Strategy_Operations 3.jpg?v=20260501"
     ],
   },
   {
@@ -194,8 +194,8 @@ const experiences = [
     ],
     tags: ["Project Management", "Logistics Transformation", "3PL", "Data Visualization", "Supplier Management"],
     images: [
-      "/assets/images/experience/Country Project Manager.jpg",
-      "/assets/images/experience/Country Project Manager 2.jpg",
+      "/assets/images/experience/Country Project Manager.jpg?v=20260501",
+      "/assets/images/experience/Country Project Manager 2.jpg?v=20260501",
     ],
   },
   {
@@ -218,10 +218,10 @@ const experiences = [
     ],
     tags: ["Supply Chain", "Global Operations", "Freight Management", "Capability Building", "Cost Optimization"],
     images: [
-      "/assets/images/experience/Supply Chain Leader.jpg",
-      "/assets/images/experience/Supply Chain Leader 2.jpg",
-      "/assets/images/experience/Supply Chain Leader 3.jpg",
-      "/assets/images/experience/Supply Chain Leader 4.jpg",
+      "/assets/images/experience/Supply Chain Leader.jpg?v=20260501",
+      "/assets/images/experience/Supply Chain Leader 2.jpg?v=20260501",
+      "/assets/images/experience/Supply Chain Leader 3.jpg?v=20260501",
+      "/assets/images/experience/Supply Chain Leader 4.jpg?v=20260501",
     ],
   },
 ];

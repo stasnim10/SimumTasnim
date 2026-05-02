@@ -14,7 +14,7 @@ const projects = [
     tags: ["3PL Optimization", "Looker Studio", "Agile", "Supplier Performance"],
     link: "https://www.linkedin.com/company/decathlonbgd/",
     linkLabel: "View Company",
-    image: "/assets/images/projects/project1_launchpad.jpg",
+    image: "/assets/images/projects/project1_launchpad.jpg?v=20260501",
   },
   {
     category: "Global Consulting · 6 Countries",
@@ -26,7 +26,7 @@ const projects = [
     tags: ["Global Consulting", "Capability Building", "Vendor Management"],
     link: "https://sustainability.decathlon.com/",
     linkLabel: "View Impact",
-    image: "/assets/images/projects/project2_transformation.jpg",
+    image: "/assets/images/projects/project2_transformation.jpg?v=20260501",
   },
   {
     category: "Healthcare · Therapprove",
@@ -38,7 +38,7 @@ const projects = [
     tags: ["UX", "Product", "Healthcare", "Financial Modeling"],
     link: "https://therapprove.com/",
     linkLabel: "View Platform",
-    image: "/assets/images/projects/project4_scheduling.jpg",
+    image: "/assets/images/projects/project4_scheduling.jpg?v=20260501",
   },
   {
     category: "Strategy · PROJXON",
@@ -50,7 +50,7 @@ const projects = [
     tags: ["Strategy", "E-Commerce", "Supply Chain", "Unit Economics"],
     link: "https://www.projxon.com/",
     linkLabel: "View Firm",
-    image: "/assets/images/projects/project3_blueprint.jpg",
+    image: "/assets/images/projects/project3_blueprint.jpg?v=20260501",
   },
 ];
 

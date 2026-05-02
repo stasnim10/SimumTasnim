@@ -61,7 +61,7 @@ const Hero = () => {
         >
           <div className="image-frame">
             <img 
-              src="/assets/images/first_image_top_page.jpg" 
+              src="/assets/images/first_image_top_page.jpg?v=20260501"
               alt="Simum Tasnim Portrait" 
               className="hero-image"
             />
