@@ -245,6 +245,13 @@ img {
   display: block;
 }
 
+/* <picture> wraps every responsive image. display:contents keeps it out of
+   the box tree entirely, so layout and every existing selector that targets
+   the inner <img> behave exactly as before. */
+picture {
+  display: contents;
+}
+
 /* ── Focus ── */
 :focus-visible {
   outline: 2px solid var(--color-accent-text);

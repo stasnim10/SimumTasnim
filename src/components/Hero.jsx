@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useEntrance } from '../hooks/useReveal';
-import { imageSize } from '../data/imageSizes';
+import Picture from './Picture';
+import { getPicture } from '../data/images';
 import './Hero.css';
 
 const Hero = () => {
@@ -62,12 +63,13 @@ const Hero = () => {
           {...enterVisual}
         >
           <div className="image-frame">
-            <img
-              src="/assets/images/first_image_top_page.jpg?v=20260910"
+            <Picture
+              image={getPicture('/assets/images/first_image_top_page.jpg')}
               alt="Simum Tasnim"
               className="hero-image"
-              {...imageSize('/assets/images/first_image_top_page.jpg')}
+              sizes="(max-width: 992px) 100vw, 480px"
               fetchPriority="high"
+              loading="eager"
               decoding="async"
             />
           </div>

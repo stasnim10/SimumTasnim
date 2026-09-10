@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useReducedMotion } from 'framer-motion';
-import webGLFluidEnhanced from 'webgl-fluid';
 import './ShaderBackground.css';
 
 const ShaderBackground = () => {
@@ -8,46 +7,68 @@ const ShaderBackground = () => {
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    // Nothing is initialised at all when reduced motion is requested — no
-    // WebGL context, no listeners, no simulation loop.
+    // Guard BEFORE the dynamic import: when reduced motion is requested the
+    // webgl-fluid chunk is never even downloaded, let alone executed.
     if (prefersReducedMotion || !canvasRef.current) return;
 
-    webGLFluidEnhanced(canvasRef.current, {
-      TRIGGER: 'hover',
-      IMMEDIATE: true,
-      AUTO: false,
-      TRANSPARENT: true,
-      BLOOM: false,
-      SUNRAYS: false,
-      SPLAT_RADIUS: 0.25,
-      SPLAT_FORCE: 6000,
-      SHADING: true,
-      COLORFUL: true,
-      DENSITY_DISSIPATION: 1.5,
-      VELOCITY_DISSIPATION: 0.5,
-    });
+    let cancelled = false;
+    let teardown = () => {};
 
-    // Forward pointer events so the fluid reacts even where UI covers the canvas.
-    const forwardEvent = (e) => {
-      if (!canvasRef.current) return;
-      canvasRef.current.dispatchEvent(
-        new MouseEvent(e.type, {
-          clientX: e.clientX,
-          clientY: e.clientY,
-          bubbles: false,
-          cancelable: false,
-        })
-      );
+    const start = async () => {
+      const { default: webGLFluidEnhanced } = await import('webgl-fluid');
+      if (cancelled || !canvasRef.current) return;
+
+      webGLFluidEnhanced(canvasRef.current, {
+        TRIGGER: 'hover',
+        IMMEDIATE: true,
+        AUTO: false,
+        TRANSPARENT: true,
+        BLOOM: false,
+        SUNRAYS: false,
+        SPLAT_RADIUS: 0.25,
+        SPLAT_FORCE: 6000,
+        SHADING: true,
+        COLORFUL: true,
+        DENSITY_DISSIPATION: 1.5,
+        VELOCITY_DISSIPATION: 0.5,
+      });
+
+      // Forward pointer events so the fluid reacts even where UI covers the canvas.
+      const forwardEvent = (e) => {
+        if (!canvasRef.current) return;
+        canvasRef.current.dispatchEvent(
+          new MouseEvent(e.type, {
+            clientX: e.clientX,
+            clientY: e.clientY,
+            bubbles: false,
+            cancelable: false,
+          })
+        );
+      };
+
+      window.addEventListener('mousemove', forwardEvent);
+      window.addEventListener('touchmove', forwardEvent, { passive: true });
+      window.addEventListener('touchstart', forwardEvent, { passive: true });
+
+      teardown = () => {
+        window.removeEventListener('mousemove', forwardEvent);
+        window.removeEventListener('touchmove', forwardEvent);
+        window.removeEventListener('touchstart', forwardEvent);
+      };
     };
 
-    window.addEventListener('mousemove', forwardEvent);
-    window.addEventListener('touchmove', forwardEvent, { passive: true });
-    window.addEventListener('touchstart', forwardEvent, { passive: true });
+    // Decorative, so it waits for idle rather than competing with first paint.
+    // Safari has no requestIdleCallback; fall back to a short timeout.
+    const supportsIdle = typeof window.requestIdleCallback === 'function';
+    const handle = supportsIdle
+      ? window.requestIdleCallback(start, { timeout: 2000 })
+      : setTimeout(start, 200);
 
     return () => {
-      window.removeEventListener('mousemove', forwardEvent);
-      window.removeEventListener('touchmove', forwardEvent);
-      window.removeEventListener('touchstart', forwardEvent);
+      cancelled = true;
+      if (supportsIdle) window.cancelIdleCallback(handle);
+      else clearTimeout(handle);
+      teardown();
     };
   }, [prefersReducedMotion]);
 

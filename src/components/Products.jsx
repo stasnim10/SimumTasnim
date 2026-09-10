@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import { useReveal } from '../hooks/useReveal';
-import { imageSize } from '../data/imageSizes';
+import Picture from './Picture';
+import { getPicture, getImageUrl } from '../data/images';
 import './Products.css';
 
 const products = [
@@ -13,7 +14,7 @@ const products = [
     link: "https://www.usotg.com",
     media: { 
       type: 'image', 
-      src: '/assets/images/products/USOTG-Store.jpg?v=20260501',
+      src: '/assets/images/products/USOTG-Store.jpg',
       clickableLink: "https://www.usotg.com" 
     }
   },
@@ -38,7 +39,7 @@ const products = [
     description: "Web platform for MBA candidates & aspiring consultants to practice case interviews through structured frameworks, real prompts, and analytics-driven iteration.",
     date: "Launched Sep 2025",
     link: "https://casequestapp.com",
-    media: { type: 'image', src: '/assets/images/products/case-quest.jpg?v=20260501' }
+    media: { type: 'image', src: '/assets/images/products/case-quest.jpg' }
   },
   {
     tag: "AI Web App · Apr 2026",
@@ -82,7 +83,7 @@ const Products = () => {
                 {product.media.type === 'video' && (
                   <video
                     className="product-image"
-                    poster={product.media.poster}
+                    poster={getImageUrl(product.media.poster)}
                     controls
                     loop
                     muted
@@ -104,21 +105,21 @@ const Products = () => {
                 {product.media.type === 'image' && (
                   product.media.clickableLink ? (
                     <a href={product.media.clickableLink} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', height: '100%' }}>
-                      <img
-                        src={product.media.src}
+                      <Picture
+                        image={getPicture(product.media.src)}
                         alt={product.title}
                         className="product-image"
-                        {...imageSize(product.media.src)}
+                        sizes="(max-width: 992px) 100vw, 560px"
                         loading="lazy"
                         decoding="async"
                       />
                     </a>
                   ) : (
-                    <img
-                      src={product.media.src}
+                    <Picture
+                      image={getPicture(product.media.src)}
                       alt={product.title}
                       className="product-image"
-                      {...imageSize(product.media.src)}
+                      sizes="(max-width: 992px) 100vw, 560px"
                       loading="lazy"
                       decoding="async"
                     />

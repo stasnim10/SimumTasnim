@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import { useReveal } from '../hooks/useReveal';
-import { imageSize } from '../data/imageSizes';
+import Picture from './Picture';
+import { getPicture } from '../data/images';
 import { useReducedMotion } from 'framer-motion';
 import './Projects.css';
 
@@ -16,7 +17,7 @@ const projects = [
     tags: ["3PL Optimization", "Looker Studio", "Agile", "Supplier Performance"],
     link: "https://www.linkedin.com/company/decathlonbgd/",
     linkLabel: "Decathlon Bangladesh",
-    image: "/assets/images/projects/project1_launchpad.jpg?v=20260910",
+    image: "/assets/images/projects/project1_launchpad.jpg",
   },
   {
     category: "Global Consulting · 6 Countries",
@@ -28,7 +29,7 @@ const projects = [
     tags: ["Global Consulting", "Capability Building", "Vendor Management"],
     link: "https://sustainability.decathlon.com/",
     linkLabel: "Decathlon Sustainability",
-    image: "/assets/images/projects/project2_transformation.jpg?v=20260910",
+    image: "/assets/images/projects/project2_transformation.jpg",
   },
   {
     category: "Healthcare · Therapprove",
@@ -40,7 +41,7 @@ const projects = [
     tags: ["UX", "Product", "Healthcare", "Financial Modeling"],
     link: "https://therapprove.com/",
     linkLabel: "Therapprove",
-    image: "/assets/images/projects/project4_scheduling.jpg?v=20260910",
+    image: "/assets/images/projects/project4_scheduling.jpg",
   },
   {
     category: "Strategy · PROJXON",
@@ -52,7 +53,7 @@ const projects = [
     tags: ["Strategy", "E-Commerce", "Supply Chain", "Unit Economics"],
     link: "https://www.projxon.com/",
     linkLabel: "PROJXON",
-    image: "/assets/images/projects/project3_blueprint.jpg?v=20260910",
+    image: "/assets/images/projects/project3_blueprint.jpg",
   },
 ];
 
@@ -95,11 +96,11 @@ const Projects = () => {
           {/* ── Hero Card ── */}
           <motion.div className="bento-card bento-hero" variants={prefersReducedMotion ? undefined : itemVariants}>
             <div className="bento-hero-image-wrap">
-              <img
-                src={hero.image}
+              <Picture
+                image={getPicture(hero.image)}
                 alt={hero.title}
                 className="bento-img"
-                {...imageSize(hero.image)}
+                sizes="(max-width: 1024px) 100vw, 680px"
                 loading="lazy"
                 decoding="async"
               />
@@ -134,11 +135,11 @@ const Projects = () => {
             {secondary.map((project, i) => (
               <motion.div key={i} className="bento-card bento-secondary" variants={prefersReducedMotion ? undefined : itemVariants}>
                 <div className="bento-secondary-image-wrap">
-                  <img
-                    src={project.image}
+                  <Picture
+                    image={getPicture(project.image)}
                     alt={project.title}
                     className="bento-img"
-                    {...imageSize(project.image)}
+                    sizes="(max-width: 640px) 100vw, 400px"
                     loading="lazy"
                     decoding="async"
                   />
