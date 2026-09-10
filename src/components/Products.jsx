@@ -1,16 +1,36 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
+import { useReveal } from '../hooks/useReveal';
+import { imageSize } from '../data/imageSizes';
 import './Products.css';
 
 const products = [
+  {
+    tag: "Amazon E-Commerce · Oct 2025",
+    title: "USOTG",
+    description: "Federally trademarked Amazon brand built from scratch. Managed product sourcing, FBA logistics, and successful product launches.",
+    date: "Live on Amazon",
+    link: "https://www.usotg.com",
+    media: { 
+      type: 'image', 
+      src: '/assets/images/products/USOTG-Store.jpg?v=20260501',
+      clickableLink: "https://www.usotg.com" 
+    }
+  },
   {
     tag: "iOS · Android · Jan 2026",
     title: "Zikr on the Go",
     description: "Mindfulness & Zikr-tracking app for Muslim users. Focused on daily spiritual habit formation, accessibility, and UX simplicity. Deployed on App Store & Google Play.",
     date: "Launched Jan 2026",
     link: "https://onelink.to/h9968b",
-    media: { type: 'video', src: '/assets/images/products/Zikrotg.MOV?v=20260501' }
+    media: {
+      type: 'video',
+      poster: '/assets/images/products/zikr-poster.jpg',
+      sources: [
+        { src: '/assets/images/products/zikr.webm', type: 'video/webm' },
+        { src: '/assets/images/products/zikr.mp4', type: 'video/mp4' },
+      ],
+    }
   },
   {
     tag: "EdTech Web App · Sep 2025",
@@ -31,35 +51,24 @@ const products = [
       src: "https://www.youtube.com/embed/W7k3avzYMB4?si=SBjkK5O1kAzhDhFb" 
     }
   },
-  {
-    tag: "Amazon E-Commerce · Oct 2025",
-    title: "USOTG",
-    description: "Federally trademarked Amazon brand built from scratch. Managed product sourcing, FBA logistics, and successful product launches.",
-    date: "Live on Amazon",
-    link: "https://www.amazon.com/stores/USOTG/page/3DF3FFB3-3953-4F0A-8D31-ACBF0BC864DE?lp_asin=B0GSCXXH65&ref_=ast_bln",
-    media: { 
-      type: 'image', 
-      src: '/assets/images/products/USOTG-Store.png?v=20260501',
-      clickableLink: "https://www.amazon.com/stores/USOTG/page/3DF3FFB3-3953-4F0A-8D31-ACBF0BC864DE?lp_asin=B0GSCXXH65&ref_=ast_bln" 
-    }
-  }
 ];
 
 const Products = () => {
+  const revealHeader = useReveal();
+  const revealMedia = useReveal({ y: 0, duration: 1.2 });
+  const revealText = useReveal({ y: 40, delay: 0.2 });
+
   return (
     <section id="products" className="products-section">
       <div className="container">
         
         <motion.div 
           className="section-header"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1 }}
+          {...revealHeader}
         >
           <div className="section-subtitle">Products Built</div>
           <h2 className="section-title">From Idea to Shipped</h2>
-          <p className="section-intro" style={{ marginBottom: "2rem" }}>3 live digital products built independently in 2025–2026 — across mobile, EdTech, AI, and e-commerce.</p>
+          <p className="section-intro">3 live digital products built independently in 2025–2026 — across mobile, EdTech, AI, and e-commerce.</p>
           <div className="thin-line"></div>
         </motion.div>
 
@@ -68,35 +77,58 @@ const Products = () => {
             <div key={index} className={`product-gallery-item ${index % 2 !== 0 ? 'reverse' : ''}`}>
               <motion.div 
                 className="product-image-container"
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1.2 }}
+                {...revealMedia}
               >
                 {product.media.type === 'video' && (
-                  <video 
-                    src={product.media.src} 
-                    className="product-image" 
-                    autoPlay 
-                    loop 
-                    muted 
+                  <video
+                    className="product-image"
+                    poster={product.media.poster}
+                    controls
+                    loop
+                    muted
                     playsInline
-                  />
+                    preload="metadata"
+                    width="720"
+                    height="1280"
+                  >
+                    {product.media.sources.map((s) => (
+                      <source key={s.src} src={s.src} type={s.type} />
+                    ))}
+                    Your browser cannot play this video.{' '}
+                    <a href={product.link} target="_blank" rel="noopener noreferrer">
+                      Open {product.title}
+                    </a>{' '}
+                    instead.
+                  </video>
                 )}
                 {product.media.type === 'image' && (
                   product.media.clickableLink ? (
                     <a href={product.media.clickableLink} target="_blank" rel="noopener noreferrer" style={{ display: 'block', width: '100%', height: '100%' }}>
-                      <img src={product.media.src} alt={product.title} className="product-image" />
+                      <img
+                        src={product.media.src}
+                        alt={product.title}
+                        className="product-image"
+                        {...imageSize(product.media.src)}
+                        loading="lazy"
+                        decoding="async"
+                      />
                     </a>
                   ) : (
-                    <img src={product.media.src} alt={product.title} className="product-image" />
+                    <img
+                      src={product.media.src}
+                      alt={product.title}
+                      className="product-image"
+                      {...imageSize(product.media.src)}
+                      loading="lazy"
+                      decoding="async"
+                    />
                   )
                 )}
                 {product.media.type === 'iframe' && (
                   <iframe 
                     src={product.media.src}
-                    className="product-image"
-                    style={{ border: 'none', aspectRatio: '16/9', width: '100%' }}
+                    className="product-embed"
+                    loading="lazy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                     title={product.title}
@@ -106,10 +138,7 @@ const Products = () => {
 
               <motion.div 
                 className="product-text"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1, delay: 0.2 }}
+                {...revealText}
               >
                 <span className="product-year">{product.tag}</span>
                 <h3 className="product-title">
@@ -119,10 +148,10 @@ const Products = () => {
                 </h3>
                 <p className="product-desc">{product.description}</p>
                 
-                <div className="product-footer" style={{ marginTop: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                  <span className="product-date" style={{ fontSize: '0.9rem', color: 'var(--color-accent)' }}>{product.date}</span>
-                  <a href={product.link} target="_blank" rel="noopener noreferrer" className="product-visit-pill">
-                    Visit <ExternalLink size={14} />
+                <div className="product-footer">
+                  <span className="product-date">{product.date}</span>
+                  <a href={product.link} target="_blank" rel="noopener noreferrer" className="pill-link">
+                    Open {product.title} <ExternalLink size={14} aria-hidden="true" />
                   </a>
                 </div>
               </motion.div>

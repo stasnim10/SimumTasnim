@@ -1,89 +1,115 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ChevronLeft, ChevronRight, ExternalLink, Play, Pause } from 'lucide-react';
+import { useReveal } from '../hooks/useReveal';
+import { imageSize } from '../data/imageSizes';
 import './Experience.css';
 
-const SLIDE_INTERVAL = 3500;
+const SLIDE_INTERVAL = 5000;
 
 const ImageCarousel = ({ images, title }) => {
+  const prefersReducedMotion = useReducedMotion();
   const [current, setCurrent] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const intervalRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(!prefersReducedMotion);
+  const [isVisible, setIsVisible] = useState(false);
+  const rootRef = useRef(null);
+  const multiple = images.length > 1;
 
-  const startInterval = () => {
-    if (images.length <= 1) return;
-    intervalRef.current = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, SLIDE_INTERVAL);
-  };
+  // Only run the timer when the carousel is actually on screen, the visitor
+  // has not paused it, and reduced motion is not requested.
+  useEffect(() => {
+    if (!multiple || !isPlaying || !isVisible || prefersReducedMotion) return;
+    const id = setInterval(
+      () => setCurrent((prev) => (prev + 1) % images.length),
+      SLIDE_INTERVAL
+    );
+    return () => clearInterval(id);
+  }, [multiple, isPlaying, isVisible, prefersReducedMotion, images.length]);
 
   useEffect(() => {
-    startInterval();
-    return () => clearInterval(intervalRef.current);
-  }, [images.length]);
+    const node = rootRef.current;
+    if (!node || !multiple) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.25 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [multiple]);
 
-  const goTo = (index) => {
-    clearInterval(intervalRef.current);
-    setCurrent(index);
-    startInterval();
-  };
-
-  const prev = () => goTo((current - 1 + images.length) % images.length);
-  const next = () => goTo((current + 1) % images.length);
+  const goTo = (index) => setCurrent((index + images.length) % images.length);
 
   return (
     <div
       className="carousel-root"
-      onMouseEnter={() => {
-        setIsHovered(true);
-        clearInterval(intervalRef.current);
-      }}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        startInterval();
-      }}
+      ref={rootRef}
+      role={multiple ? 'group' : undefined}
+      aria-roledescription={multiple ? 'carousel' : undefined}
+      aria-label={multiple ? `${title} — ${images.length} images` : undefined}
     >
       <div className="carousel-track">
         {images.map((src, i) => (
           <img
-            key={i}
+            key={src}
             src={src}
-            alt={`${title} ${i + 1}`}
+            alt={`${title} ${i + 1} of ${images.length}`}
             className={`carousel-slide ${i === current ? 'active' : ''}`}
+            {...imageSize(src)}
+            loading="lazy"
+            decoding="async"
+            aria-hidden={i === current ? undefined : 'true'}
           />
         ))}
-        <div className="gallery-image-overlay" />
+        <div className="gallery-image-overlay" aria-hidden="true" />
 
-        {images.length > 1 && (
+        {multiple && (
           <>
             <button
-              className={`carousel-arrow carousel-arrow-left ${isHovered ? 'visible' : ''}`}
-              onClick={prev}
-              aria-label="Previous image"
+              type="button"
+              className="carousel-arrow carousel-arrow-left"
+              onClick={() => goTo(current - 1)}
+              aria-label={`Previous image of ${title}`}
             >
-              <ChevronLeft size={18} />
+              <ChevronLeft size={18} aria-hidden="true" />
             </button>
             <button
-              className={`carousel-arrow carousel-arrow-right ${isHovered ? 'visible' : ''}`}
-              onClick={next}
-              aria-label="Next image"
+              type="button"
+              className="carousel-arrow carousel-arrow-right"
+              onClick={() => goTo(current + 1)}
+              aria-label={`Next image of ${title}`}
             >
-              <ChevronRight size={18} />
+              <ChevronRight size={18} aria-hidden="true" />
             </button>
           </>
         )}
       </div>
 
-      {images.length > 1 && (
-        <div className="carousel-dots">
-          {images.map((_, i) => (
+      {multiple && (
+        <div className="carousel-controls">
+          <div className="carousel-dots" role="tablist" aria-label={`${title} images`}>
+            {images.map((src, i) => (
+              <button
+                key={src}
+                type="button"
+                role="tab"
+                className={`carousel-dot ${i === current ? 'active' : ''}`}
+                onClick={() => goTo(i)}
+                aria-selected={i === current}
+                aria-label={`Show image ${i + 1} of ${images.length}`}
+              />
+            ))}
+          </div>
+
+          {!prefersReducedMotion && (
             <button
-              key={i}
-              className={`carousel-dot ${i === current ? 'active' : ''}`}
-              onClick={() => goTo(i)}
-              aria-label={`Go to image ${i + 1}`}
-            />
-          ))}
+              type="button"
+              className="carousel-playpause"
+              onClick={() => setIsPlaying((p) => !p)}
+              aria-label={isPlaying ? `Pause ${title} slideshow` : `Play ${title} slideshow`}
+            >
+              {isPlaying ? <Pause size={13} aria-hidden="true" /> : <Play size={13} aria-hidden="true" />}
+            </button>
+          )}
         </div>
       )}
     </div>
@@ -108,7 +134,7 @@ const experiences = [
       "Owned full lifecycle: product vision → UX flows → sprint delivery → analytics instrumentation → continuous iteration",
     ],
     tags: ["Product Strategy", "UX Design", "iOS/Android", "AI Integration", "Sprint Delivery"],
-    images: ["/assets/images/experience/Founder_Product Developer.jpg?v=20260501"],
+    images: ["/assets/images/experience/Founder_Product Developer.jpg?v=20260910"],
   },
   {
     period: "Oct 2025 – Present",
@@ -128,7 +154,7 @@ const experiences = [
       "Successfully launched two products in April 2026, managing full go-to-market from sourcing to live listing",
     ],
     tags: ["E-Commerce", "Supply Chain", "Brand Building", "Amazon FBA", "P&L Management"],
-    images: ["/assets/images/experience/USOTG_CEO.jpg?v=20260501"],
+    images: ["/assets/images/experience/USOTG_CEO.jpg?v=20260910"],
   },
   {
     period: "Aug 2024 – Present",
@@ -147,7 +173,7 @@ const experiences = [
       "Organized student-teacher meetup events and led academic experience improvement initiatives",
     ],
     tags: ["Leadership", "Coaching", "Student Advocacy", "AI Tools", "Facilitation"],
-    images: ["/assets/images/experience/VP_MBA Team Coach.jpg?v=20260501"],
+    images: ["/assets/images/experience/VP_MBA Team Coach.jpg?v=20260910"],
   },
   {
     period: "Jun – Aug 2025",
@@ -171,9 +197,9 @@ const experiences = [
       { text: "Consulting Reflections", url: "https://www.linkedin.com/pulse/reflecting-my-consulting-internship-projxon-simum-tasnim-lpwxc" }
     ],
     images: [
-      "/assets/images/experience/Strategy_Operations.jpg?v=20260501",
-      "/assets/images/experience/Strategy_Operations 2.jpg?v=20260501",
-      "/assets/images/experience/Strategy_Operations 3.jpg?v=20260501"
+      "/assets/images/experience/Strategy_Operations.jpg?v=20260910",
+      "/assets/images/experience/Strategy_Operations 2.jpg?v=20260910",
+      "/assets/images/experience/Strategy_Operations 3.jpg?v=20260910"
     ],
   },
   {
@@ -194,8 +220,8 @@ const experiences = [
     ],
     tags: ["Project Management", "Logistics Transformation", "3PL", "Data Visualization", "Supplier Management"],
     images: [
-      "/assets/images/experience/Country Project Manager.jpg?v=20260501",
-      "/assets/images/experience/Country Project Manager 2.jpg?v=20260501",
+      "/assets/images/experience/Country Project Manager.jpg?v=20260910",
+      "/assets/images/experience/Country Project Manager 2.jpg?v=20260910",
     ],
   },
   {
@@ -218,25 +244,26 @@ const experiences = [
     ],
     tags: ["Supply Chain", "Global Operations", "Freight Management", "Capability Building", "Cost Optimization"],
     images: [
-      "/assets/images/experience/Supply Chain Leader.jpg?v=20260501",
-      "/assets/images/experience/Supply Chain Leader 2.jpg?v=20260501",
-      "/assets/images/experience/Supply Chain Leader 3.jpg?v=20260501",
-      "/assets/images/experience/Supply Chain Leader 4.jpg?v=20260501",
+      "/assets/images/experience/Supply Chain Leader.jpg?v=20260910",
+      "/assets/images/experience/Supply Chain Leader 2.jpg?v=20260910",
+      "/assets/images/experience/Supply Chain Leader 3.jpg?v=20260910",
+      "/assets/images/experience/Supply Chain Leader 4.jpg?v=20260910",
     ],
   },
 ];
 
 const Experience = () => {
+  const revealHeader = useReveal();
+  const revealMedia = useReveal({ y: 0, duration: 1.2 });
+  const revealText = useReveal({ y: 40, delay: 0.2 });
+
   return (
     <section id="experience" className="experience-section">
       <div className="container">
 
         <motion.div
           className="section-header"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1 }}
+          {...revealHeader}
         >
           <div className="section-subtitle">Career Story</div>
           <h2 className="section-title">Exhibition of Experience</h2>
@@ -250,20 +277,14 @@ const Experience = () => {
 
               <motion.div
                 className="gallery-image-container"
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1.2 }}
+                {...revealMedia}
               >
                 <ImageCarousel images={exp.images} title={exp.title} />
               </motion.div>
 
               <motion.div
                 className="gallery-text"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1, delay: 0.2 }}
+                {...revealText}
               >
                 <span className="gallery-org">{exp.org}</span>
                 <span className="gallery-year">{exp.period}</span>
@@ -292,10 +313,10 @@ const Experience = () => {
                 </div>
 
                 {exp.links && exp.links.length > 0 && (
-                  <div className="gallery-links" style={{ marginTop: '2rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                  <div className="gallery-links">
                     {exp.links.map((link, i) => (
-                      <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="gallery-link-pill">
-                        {link.text} <ExternalLink size={14} />
+                      <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" className="pill-link">
+                        {link.text} <ExternalLink size={14} aria-hidden="true" />
                       </a>
                     ))}
                   </div>

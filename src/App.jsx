@@ -1,4 +1,3 @@
-import React from 'react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import Experience from './components/Experience';
@@ -12,7 +11,7 @@ function App() {
     <div className="app-container">
       <ShaderBackground />
       <Navigation />
-      <main>
+      <main id="main">
         <Hero />
         <Products />
         <Experience />

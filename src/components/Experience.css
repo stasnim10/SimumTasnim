@@ -2,23 +2,7 @@
   position: relative;
 }
 
-.experience-section .section-subtitle {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--color-accent);
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-}
-
-.experience-section .section-intro {
-  color: var(--color-text);
-  opacity: 0.8;
-  max-width: 600px;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
-}
+/* .section-subtitle / .section-intro are defined once in index.css. */
 
 .experience-gallery {
   display: flex;
@@ -35,12 +19,9 @@
   align-items: center;
 }
 
-.gallery-item.reverse {
-  direction: rtl;
-}
-
-.gallery-item.reverse > * {
-  direction: ltr;
+/* Alternating rhythm via grid order rather than `direction: rtl`. */
+.gallery-item.reverse .gallery-image-container {
+  order: 2;
 }
 
 /* ── Image container ── */
@@ -97,36 +78,46 @@
 .gallery-image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 60%,
-    rgba(26, 26, 26, 0.1) 100%
-  );
+  background: var(--scrim-image);
   pointer-events: none;
   z-index: 2;
 }
 
-/* ── Carousel arrows ── */
+/* ── Carousel arrows ──
+   Visibility is driven by CSS hover and keyboard focus, not by a React
+   onMouseEnter flag. On touch (no hover) they are always visible, so the
+   control is reachable without a pointer. */
 .carousel-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   z-index: 5;
   background: var(--color-bg);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-control);
   color: var(--color-text);
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.25s ease, background 0.2s ease;
+  opacity: 1;
+  transition: opacity 0.25s ease, background 0.2s ease, color 0.2s ease;
 }
 
-.carousel-arrow.visible {
+@media (hover: hover) and (pointer: fine) {
+  .carousel-arrow {
+    opacity: 0;
+  }
+
+  .carousel-root:hover .carousel-arrow,
+  .carousel-root:focus-within .carousel-arrow {
+    opacity: 1;
+  }
+}
+
+.carousel-arrow:focus-visible {
   opacity: 1;
 }
 
@@ -138,28 +129,64 @@
 .carousel-arrow-left  { left: 0.75rem; }
 .carousel-arrow-right { right: 0.75rem; }
 
-/* ── Dots ── */
+/* ── Dots and playback ── */
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0 0;
+}
+
 .carousel-dots {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 0 0;
+  gap: 0.15rem;
 }
 
+/* 28x28 hit area with a 6px visual mark inside it, per the minimum
+   control size. background-clip keeps the padding transparent. */
 .carousel-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  padding: 11px;
   border: none;
-  background: var(--color-border);
+  background: var(--color-border-control);
+  background-clip: content-box;
+  border-radius: 50%;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
-  padding: 0;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-dot:hover {
+  background-color: var(--color-text);
+  background-clip: content-box;
 }
 
 .carousel-dot.active {
-  background: var(--color-accent-alt);
-  transform: scale(1.4);
+  background-color: var(--color-accent-alt-text);
+  background-clip: content-box;
+  padding: 9px;
+}
+
+.carousel-playpause {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-border-control);
+  background: transparent;
+  color: var(--color-text-2);
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.carousel-playpause:hover {
+  color: var(--color-text);
+  border-color: var(--color-text);
 }
 
 /* ── Text block ── */
@@ -172,10 +199,10 @@
 
 .gallery-org {
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: var(--text-label);
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   font-weight: 600;
   display: block;
   margin-bottom: 0.35rem;
@@ -183,10 +210,10 @@
 
 .gallery-year {
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: var(--text-label);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-accent-alt);
+  color: var(--color-accent-alt-text);
   display: block;
   margin-bottom: 1rem;
 }
@@ -199,10 +226,10 @@
 
 .gallery-desc {
   font-size: 1rem;
-  color: var(--color-text);
-  opacity: 0.7;
+  color: var(--color-text-2);
   line-height: 1.7;
   margin-bottom: 2rem;
+  max-width: 62ch;
 }
 
 /* ── Highlights (key metrics) ── */
@@ -225,18 +252,18 @@
   font-family: var(--font-heading);
   font-size: clamp(1.4rem, 2vw, 1.9rem);
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--color-accent-alt-text);
   line-height: 1;
   letter-spacing: -0.01em;
+  text-shadow: 0 0 24px color-mix(in srgb, currentColor var(--glow-mix), transparent);
 }
 
 .highlight-label {
   font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-size: var(--text-label);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-text);
-  opacity: 0.5;
+  color: var(--color-muted);
 }
 
 /* ── Bullets ── */
@@ -246,13 +273,13 @@
   flex-direction: column;
   gap: 0.75rem;
   margin-bottom: 2rem;
+  max-width: 64ch;
 }
 
 .gallery-bullets li {
-  font-size: 0.92rem;
-  color: var(--color-text);
-  opacity: 0.75;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  color: var(--color-text-2);
+  line-height: 1.65;
   padding-left: 1.1rem;
   position: relative;
 }
@@ -265,7 +292,7 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background-color: var(--color-accent-alt);
+  background-color: var(--color-accent-alt-text);
 }
 
 /* ── Tags ── */
@@ -277,20 +304,26 @@
 
 .gallery-tag {
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: var(--text-label);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 0.3rem 0.75rem;
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  opacity: 0.6;
+  border: 1px solid var(--color-border-control);
+  color: var(--color-text-2);
   border-radius: 9999px;
-  transition: opacity 0.2s ease, border-color 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .gallery-item:hover .gallery-tag {
-  opacity: 0.9;
-  border-color: var(--color-accent-alt);
+  color: var(--color-text);
+  border-color: var(--color-accent-alt-text);
+}
+
+.gallery-links {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 /* ── Responsive ── */
@@ -303,7 +336,10 @@
   .gallery-item.reverse {
     grid-template-columns: 1fr;
     gap: 2.5rem;
-    direction: ltr;
+  }
+
+  .gallery-item.reverse .gallery-image-container {
+    order: 0;
   }
 
   .gallery-title {
@@ -324,23 +360,4 @@
   .highlight-value {
     font-size: 1.4rem;
   }
-}
-
-.gallery-link-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1.25rem;
-  background-color: var(--color-accent);
-  color: var(--color-bg);
-  border-radius: 9999px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-
-.gallery-link-pill:hover {
-  background-color: var(--color-accent-alt);
-  transform: translateY(-2px);
 }

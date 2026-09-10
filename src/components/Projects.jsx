@@ -1,6 +1,8 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
+import { useReveal } from '../hooks/useReveal';
+import { imageSize } from '../data/imageSizes';
+import { useReducedMotion } from 'framer-motion';
 import './Projects.css';
 
 const projects = [
@@ -13,8 +15,8 @@ const projects = [
     description: "Led Decathlon Bangladesh's largest-ever supply chain initiative — 3PL optimization, digital systems integration, and supplier performance overhaul across the entire national logistics network. Delivered 15% cost reduction and $500K in annual savings.",
     tags: ["3PL Optimization", "Looker Studio", "Agile", "Supplier Performance"],
     link: "https://www.linkedin.com/company/decathlonbgd/",
-    linkLabel: "View Company",
-    image: "/assets/images/projects/project1_launchpad.jpg?v=20260501",
+    linkLabel: "Decathlon Bangladesh",
+    image: "/assets/images/projects/project1_launchpad.jpg?v=20260910",
   },
   {
     category: "Global Consulting · 6 Countries",
@@ -25,8 +27,8 @@ const projects = [
     description: "Coached teams across Egypt, Ethiopia, France, Sri Lanka, India, and Cambodia — improving supplier performance by 30% and reducing defect rates by 15% through capability building and operational tools.",
     tags: ["Global Consulting", "Capability Building", "Vendor Management"],
     link: "https://sustainability.decathlon.com/",
-    linkLabel: "View Impact",
-    image: "/assets/images/projects/project2_transformation.jpg?v=20260501",
+    linkLabel: "Decathlon Sustainability",
+    image: "/assets/images/projects/project2_transformation.jpg?v=20260910",
   },
   {
     category: "Healthcare · Therapprove",
@@ -37,8 +39,8 @@ const projects = [
     description: "Redesigned patient scheduling and provider matching UX — cutting booking time by 20% and improving match rates by 25%. Co-developed the investor materials that supported a successful $500K pre-seed raise.",
     tags: ["UX", "Product", "Healthcare", "Financial Modeling"],
     link: "https://therapprove.com/",
-    linkLabel: "View Platform",
-    image: "/assets/images/projects/project4_scheduling.jpg?v=20260501",
+    linkLabel: "Therapprove",
+    image: "/assets/images/projects/project4_scheduling.jpg?v=20260910",
   },
   {
     category: "Strategy · PROJXON",
@@ -49,8 +51,8 @@ const projects = [
     description: "Delivered three executive-ready strategy playbooks driving a 12% client sales lift. Led end-to-end DTC supply chain for Zephyr Aero Leather — from supplier sourcing through 3 prototype rounds to 60% target gross margin pricing.",
     tags: ["Strategy", "E-Commerce", "Supply Chain", "Unit Economics"],
     link: "https://www.projxon.com/",
-    linkLabel: "View Firm",
-    image: "/assets/images/projects/project3_blueprint.jpg?v=20260501",
+    linkLabel: "PROJXON",
+    image: "/assets/images/projects/project3_blueprint.jpg?v=20260910",
   },
 ];
 
@@ -66,6 +68,8 @@ const itemVariants = {
 
 const Projects = () => {
   const [hero, ...secondary] = projects;
+  const revealHeader = useReveal();
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <section id="projects" className="projects-section">
@@ -73,10 +77,7 @@ const Projects = () => {
 
         <motion.div
           className="section-header"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1 }}
+          {...revealHeader}
         >
           <div className="section-subtitle">Curated Work</div>
           <h2 className="section-title">Case Studies</h2>
@@ -86,25 +87,32 @@ const Projects = () => {
 
         <motion.div
           className="bento-grid"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-100px" }}
+          variants={prefersReducedMotion ? undefined : containerVariants}
+          initial={prefersReducedMotion ? undefined : 'hidden'}
+          whileInView={prefersReducedMotion ? undefined : 'show'}
+          viewport={{ once: true, margin: '-100px' }}
         >
           {/* ── Hero Card ── */}
-          <motion.div className="bento-card bento-hero" variants={itemVariants}>
+          <motion.div className="bento-card bento-hero" variants={prefersReducedMotion ? undefined : itemVariants}>
             <div className="bento-hero-image-wrap">
-              <img src={hero.image} alt={hero.title} className="bento-img" />
-              <div className="bento-hero-metric">
-                <span className="hero-metric-number">{hero.metric}</span>
-                <span className="hero-metric-label">{hero.metricLabel}</span>
-              </div>
+              <img
+                src={hero.image}
+                alt={hero.title}
+                className="bento-img"
+                {...imageSize(hero.image)}
+                loading="lazy"
+                decoding="async"
+              />
             </div>
 
             <div className="bento-hero-body">
               <div className="bento-meta">
                 <span className="bento-category">{hero.category}</span>
                 <span className="bento-period">{hero.period}</span>
+              </div>
+              <div className="bento-metric">
+                <span className="bento-metric-number bento-metric-number--hero">{hero.metric}</span>
+                <span className="bento-metric-label">{hero.metricLabel}</span>
               </div>
               <h3 className="bento-title">{hero.title}</h3>
               <p className="bento-desc">{hero.description}</p>
@@ -114,8 +122,8 @@ const Projects = () => {
                     <span key={i} className="bento-tag">{tag}</span>
                   ))}
                 </div>
-                <a href={hero.link} target="_blank" rel="noopener noreferrer" className="bento-pill">
-                  {hero.linkLabel} <ExternalLink size={13} />
+                <a href={hero.link} target="_blank" rel="noopener noreferrer" className="pill-link">
+                  {hero.linkLabel} <ExternalLink size={13} aria-hidden="true" />
                 </a>
               </div>
             </div>
@@ -124,9 +132,16 @@ const Projects = () => {
           {/* ── Secondary Cards ── */}
           <div className="bento-secondary-row">
             {secondary.map((project, i) => (
-              <motion.div key={i} className="bento-card bento-secondary" variants={itemVariants}>
+              <motion.div key={i} className="bento-card bento-secondary" variants={prefersReducedMotion ? undefined : itemVariants}>
                 <div className="bento-secondary-image-wrap">
-                  <img src={project.image} alt={project.title} className="bento-img" />
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="bento-img"
+                    {...imageSize(project.image)}
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
 
                 <div className="bento-secondary-body">
@@ -134,9 +149,9 @@ const Projects = () => {
                     <span className="bento-category">{project.category}</span>
                     <span className="bento-period">{project.period}</span>
                   </div>
-                  <div className="secondary-metric-wrap">
-                    <span className="secondary-metric-number">{project.metric}</span>
-                    <span className="secondary-metric-label">{project.metricLabel}</span>
+                  <div className="bento-metric">
+                    <span className="bento-metric-number">{project.metric}</span>
+                    <span className="bento-metric-label">{project.metricLabel}</span>
                   </div>
                   <h3 className="bento-title">{project.title}</h3>
                   <p className="bento-desc">{project.description}</p>
@@ -146,8 +161,14 @@ const Projects = () => {
                         <span key={j} className="bento-tag">{tag}</span>
                       ))}
                     </div>
-                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="bento-icon-link">
-                      <ExternalLink size={16} />
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bento-icon-link"
+                      aria-label={`${project.linkLabel}: ${project.title}`}
+                    >
+                      <ExternalLink size={16} aria-hidden="true" />
                     </a>
                   </div>
                 </div>
