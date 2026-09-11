@@ -57,6 +57,10 @@
   padding: 2.75rem 2.5rem 2.25rem;
   display: flex;
   flex-direction: column;
+  /* Flex children default to min-width:auto and so refuse to shrink below their
+     content width. Combined with overflow:hidden on .bento-card, long words and
+     the metric row were clipped at the right edge instead of wrapping. */
+  min-width: 0;
   gap: 1rem;
   border-left: 1px solid var(--color-border);
 }
@@ -73,6 +77,7 @@
 .bento-secondary {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .bento-secondary-image-wrap {
@@ -99,6 +104,7 @@
   padding: 1.75rem 1.75rem 1.5rem;
   display: flex;
   flex-direction: column;
+  min-width: 0;
   gap: 0.6rem;
   flex: 1;
 }
@@ -130,6 +136,7 @@
 }
 
 .bento-metric-label {
+  overflow-wrap: break-word;
   font-family: var(--font-body);
   font-size: var(--text-label);
   text-transform: uppercase;
@@ -165,6 +172,7 @@
 }
 
 .bento-title {
+  overflow-wrap: break-word;
   font-family: var(--font-heading);
   font-size: clamp(1.35rem, 2vw, 1.8rem);
   font-weight: 400;
@@ -174,6 +182,7 @@
 }
 
 .bento-desc {
+  overflow-wrap: break-word;
   font-size: 0.95rem;
   color: var(--color-text-2);
   line-height: 1.65;
@@ -186,6 +195,11 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+  /* The pill is white-space:nowrap and ~217px wide; beside the tag row it
+     cannot fit a phone column, and .bento-card's overflow:hidden clipped it
+     rather than letting it move. Wrapping drops it onto its own line.
+     No effect on desktop, where the row has room. */
+  flex-wrap: wrap;
   gap: 1rem;
   margin-top: auto;
   padding-top: 1.25rem;
@@ -264,5 +278,15 @@
 @media (max-width: 640px) {
   .bento-secondary-row {
     grid-template-columns: 1fr;
+  }
+
+  /* 60ch is wider than a phone viewport, which pushed the flex column past the
+     card and into overflow:hidden. */
+  .bento-desc {
+    max-width: 100%;
+  }
+
+  .bento-hero-body {
+    padding: 1.75rem 1.5rem 1.5rem;
   }
 }

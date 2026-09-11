@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useEntrance } from '../hooks/useReveal';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 import Picture from './Picture';
 import { getPicture } from '../data/images';
 import './Hero.css';
@@ -8,16 +9,22 @@ const Hero = () => {
   const prefersReducedMotion = useReducedMotion();
   const { scrollY } = useScroll();
 
-  // Parallax + scroll-fade are decorative. Under reduced motion the portrait
-  // simply stays put and stays visible.
+  // Matches the 992px breakpoint in Hero.css, where the grid collapses to one
+  // column. Above it the portrait sits beside the text and can drift; below it
+  // the portrait is in the flow, so translating and fading it leaves its layout
+  // box reserved — a full-width hole under the hero. Off entirely on mobile.
+  const isDesktop = useMediaQuery('(min-width: 993px)');
+
+  // Parallax + scroll-fade are decorative. Under reduced motion, or on mobile,
+  // the portrait simply stays put and stays visible.
   const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
   const opacity = useTransform(scrollY, [0, 500], [1, 0]);
-  const parallaxStyle = prefersReducedMotion ? undefined : { y: y1, opacity };
+  const parallaxStyle =
+    prefersReducedMotion || !isDesktop ? undefined : { y: y1, opacity };
 
   const enterContent = useEntrance({ y: 30, duration: 1.2 });
-  const enterGreeting = useEntrance({ delay: 0.5 });
-  const enterDesc = useEntrance({ delay: 0.8 });
-  const enterActions = useEntrance({ y: 20, delay: 1 });
+  const enterDesc = useEntrance({ delay: 0.5 });
+  const enterActions = useEntrance({ y: 20, delay: 0.7 });
   const enterVisual = useEntrance({ duration: 1.5 });
   const enterScroll = useEntrance({ delay: 1.5 });
 
@@ -29,13 +36,6 @@ const Hero = () => {
           className="hero-content"
           {...enterContent}
         >
-          <motion.p 
-            className="hero-greeting"
-            {...enterGreeting}
-          >
-            MBA Candidate & Strategic Consultant
-          </motion.p>
-          
           <h1 className="hero-title">
             <span className="block">Simum</span>
             <span className="block italic-serif">Tasnim</span>
@@ -45,7 +45,7 @@ const Hero = () => {
             className="hero-description"
             {...enterDesc}
           >
-            Transforming complex business challenges into strategic opportunities through data-driven insights and innovative design thinking.
+            Supply chain leader turned founder. Five years moving freight across three continents, then I started building the products I wanted to use.
           </motion.p>
           
           <motion.div 

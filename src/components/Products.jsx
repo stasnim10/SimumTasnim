@@ -69,7 +69,7 @@ const Products = () => {
         >
           <div className="section-subtitle">Products Built</div>
           <h2 className="section-title">From Idea to Shipped</h2>
-          <p className="section-intro">3 live digital products built independently in 2025–2026 — across mobile, EdTech, AI, and e-commerce.</p>
+          <p className="section-intro">4 products and brands, built independently in 2025–2026 — across mobile, EdTech, AI, and e-commerce.</p>
           <div className="thin-line"></div>
         </motion.div>
 

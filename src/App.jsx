@@ -1,5 +1,6 @@
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
+import StatBand from './components/StatBand';
 import Experience from './components/Experience';
 import Products from './components/Products';
 import Projects from './components/Projects';
@@ -13,6 +14,7 @@ function App() {
       <Navigation />
       <main id="main">
         <Hero />
+        <StatBand />
         <Products />
         <Experience />
         <Projects />

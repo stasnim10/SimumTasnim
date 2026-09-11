@@ -22,17 +22,10 @@
   z-index: 10;
 }
 
-.hero-greeting {
-  font-family: var(--font-body);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: var(--text-label);
-  color: var(--color-accent-text);
-  margin-bottom: 1.5rem;
-}
-
 .hero-title {
-  margin-bottom: 2rem;
+  /* The eyebrow above this used to carry 1.5rem of separation; with it gone the
+     name leads, and the gap to the description opens up slightly to compensate. */
+  margin-bottom: 2.5rem;
   /* max-content, not fit-content: the italic line carries padding-left, and
      fit-content sizes to the narrower line, leaving the overflowing glyphs
      with no background for background-clip:text to paint -> invisible text.
@@ -174,6 +167,20 @@
   
   .image-frame::before {
     display: none;
+  }
+
+  /* The source is 1066x1600 (2:3). The desktop 3/4 crop is deliberate and stays
+     as-is; on a phone it fought the intrinsic ratio and, with no height cap,
+     rendered a ~520px tall photo that owned the whole fold. Use the real ratio
+     here and cap the height. The width/height attributes still supply the ratio,
+     so the box is reserved before load and CLS stays at 0. */
+  .hero-image {
+    aspect-ratio: auto;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 58vh;
+    margin-inline: auto;
   }
   
   .scroll-indicator {

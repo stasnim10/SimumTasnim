@@ -1,0 +1,148 @@
+/* Type-led cards, deliberately without imagery, so they read as newer work and
+   sit visually below the image-led Case Studies above them. */
+.ventures {
+  margin-top: 6rem;
+}
+
+.ventures-header {
+  margin-bottom: 2.5rem;
+}
+
+.ventures-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.ventures-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.venture-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  gap: 0.6rem;
+  padding: 1.75rem 1.75rem 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.venture-card:hover {
+  border-color: var(--color-accent-alt-text);
+  box-shadow: var(--shadow-card);
+}
+
+/* Early-stage cards read one step quieter than shipped ones. */
+.venture-card--early {
+  background: transparent;
+  border-style: dashed;
+}
+
+.venture-status {
+  font-family: var(--font-body);
+  font-size: var(--text-label);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.venture-status--shipped {
+  color: var(--color-accent-alt-text);
+}
+
+.venture-status--early {
+  color: var(--color-accent-3-text);
+}
+
+.venture-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--color-text);
+  margin: 0.2rem 0 0;
+  overflow-wrap: break-word;
+}
+
+.venture-meta {
+  font-family: var(--font-body);
+  font-size: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-accent-text);
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+.venture-desc {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--color-text-2);
+  margin: 0.3rem 0 0;
+  max-width: 46ch;
+  overflow-wrap: break-word;
+}
+
+.venture-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
+}
+
+.venture-tag {
+  font-family: var(--font-body);
+  font-size: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--color-border-control);
+  color: var(--color-text-2);
+  border-radius: 9999px;
+  overflow-wrap: break-word;
+}
+
+.ventures-early {
+  margin-top: 2.5rem;
+}
+
+.ventures-divider {
+  font-family: var(--font-body);
+  font-size: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-muted);
+  margin: 0 0 1.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 768px) {
+  .ventures-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .venture-card {
+    padding: 1.5rem 1.25rem 1.25rem;
+  }
+
+  .venture-desc {
+    max-width: 100%;
+  }
+}
