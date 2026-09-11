@@ -32,3 +32,9 @@ dist/
 # macOS
 .DS_Store
 **/.DS_Store
+
+# Archived copies of the previous static site — not built, not deployed.
+# Untracked, but not ignored until now: a stray `git add -A` would have staged
+# legacy/ wholesale and SimumTasnim/ as a broken gitlink.
+SimumTasnim/
+legacy/

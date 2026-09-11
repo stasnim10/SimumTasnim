@@ -35,6 +35,10 @@ jobs:
 
   deploy:
     needs: build
+    # Without this gate a manual workflow_dispatch on ANY branch would publish
+    # that branch to the live custom domain. The push trigger above is already
+    # main-only; this closes the manual path.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
