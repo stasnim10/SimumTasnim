@@ -22,17 +22,10 @@
   z-index: 10;
 }
 
-.hero-greeting {
-  font-family: var(--font-body);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-size: var(--text-label);
-  color: var(--color-accent-text);
-  margin-bottom: 1.5rem;
-}
-
 .hero-title {
-  margin-bottom: 2rem;
+  /* The eyebrow above this used to carry 1.5rem of separation; with it gone the
+     name leads, and the gap to the description opens up slightly to compensate. */
+  margin-bottom: 2.5rem;
   /* max-content, not fit-content: the italic line carries padding-left, and
      fit-content sizes to the narrower line, leaving the overflowing glyphs
      with no background for background-clip:text to paint -> invisible text.

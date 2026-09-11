@@ -23,9 +23,8 @@ const Hero = () => {
     prefersReducedMotion || !isDesktop ? undefined : { y: y1, opacity };
 
   const enterContent = useEntrance({ y: 30, duration: 1.2 });
-  const enterGreeting = useEntrance({ delay: 0.5 });
-  const enterDesc = useEntrance({ delay: 0.8 });
-  const enterActions = useEntrance({ y: 20, delay: 1 });
+  const enterDesc = useEntrance({ delay: 0.5 });
+  const enterActions = useEntrance({ y: 20, delay: 0.7 });
   const enterVisual = useEntrance({ duration: 1.5 });
   const enterScroll = useEntrance({ delay: 1.5 });
 
@@ -37,13 +36,6 @@ const Hero = () => {
           className="hero-content"
           {...enterContent}
         >
-          <motion.p 
-            className="hero-greeting"
-            {...enterGreeting}
-          >
-            MBA Candidate & Strategic Consultant
-          </motion.p>
-          
           <h1 className="hero-title">
             <span className="block">Simum</span>
             <span className="block italic-serif">Tasnim</span>
