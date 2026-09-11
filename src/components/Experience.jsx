@@ -158,7 +158,7 @@ const experiences = [
     images: ["/assets/images/experience/USOTG_CEO.jpg"],
   },
   {
-    period: "Aug 2024 – Present",
+    period: "Aug 2024 – May 2026",
     org: "University of Rochester – Simon Business School",
     title: "VP of Academic Affairs & MBA Team Coach",
     description: "Elected VP of Academic Affairs by peers to represent MBA student interests to school leadership, while simultaneously coaching first-year teams and driving AI adoption across campus as a Perplexity Campus Partner.",
