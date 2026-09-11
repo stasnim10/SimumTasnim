@@ -1,0 +1,64 @@
+/* Sits between the hero and Products. Hairline rules rather than a filled
+   panel, so it reads as a rule across the page instead of a card. */
+.stat-band {
+  padding: 0 2rem;
+}
+
+.stat-band-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2rem;
+  padding-top: 2.25rem;
+  padding-bottom: 2.25rem;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.stat-value {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-accent-alt-text);
+  /* Same neon treatment as the other metric numerals. */
+  text-shadow: 0 0 24px color-mix(in srgb, currentColor var(--glow-mix), transparent);
+}
+
+.stat-label {
+  font-family: var(--font-body);
+  font-size: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text-2);
+  overflow-wrap: break-word;
+}
+
+@supports not (color: color-mix(in srgb, red 50%, transparent)) {
+  .stat-value { text-shadow: none; }
+}
+
+@media (forced-colors: active) {
+  .stat-value { text-shadow: none; }
+}
+
+@media (max-width: 768px) {
+  .stat-band {
+    padding: 0 1.5rem;
+  }
+
+  .stat-band-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem 1.25rem;
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
+  }
+}
