@@ -45,7 +45,7 @@ const Hero = () => {
             className="hero-description"
             {...enterDesc}
           >
-            Transforming complex business challenges into strategic opportunities through data-driven insights and innovative design thinking.
+            Supply chain leader turned founder. Five years moving freight across three continents, then I started building the products I wanted to use.
           </motion.p>
           
           <motion.div 
