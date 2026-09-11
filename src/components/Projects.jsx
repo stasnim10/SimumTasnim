@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import { useReveal } from '../hooks/useReveal';
+import Ventures from './Ventures';
 import Picture from './Picture';
 import { getPicture } from '../data/images';
 import { useReducedMotion } from 'framer-motion';
@@ -177,6 +178,8 @@ const Projects = () => {
             ))}
           </div>
         </motion.div>
+
+        <Ventures />
 
       </div>
     </section>
