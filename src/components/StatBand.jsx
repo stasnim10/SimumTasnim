@@ -9,13 +9,15 @@ import './StatBand.css';
  * different sets, so a reader can add them without having to reconcile an
  * overlap. Order separates the two sixes.
  *
- * No duration figures: every entry is an outcome.
+ * No duration figures: every entry is an outcome. The ventures label carries no
+ * verb, because two of the six ship with closed dates and "in flight" would
+ * contradict their own status chips.
  */
 const stats = [
   { value: '$240M', label: 'Export ops managed' },
   { value: '6', label: 'Countries advised' },
   { value: '4', label: 'Products shipped' },
-  { value: '6', label: 'Ventures in flight' },
+  { value: '6', label: 'Ventures' },
 ];
 
 const StatBand = () => {
