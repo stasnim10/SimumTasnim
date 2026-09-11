@@ -6,16 +6,20 @@ import './Ventures.css';
  * Ventures sits below Case Studies inside the same #projects section, so no
  * nav item, route or anchor changes.
  *
- * Descriptions are the owner's own wording. Where none was supplied the card
- * renders without a paragraph rather than carrying invented copy — see the
- * TODO markers.
+ * Descriptions are the owner's own wording. Status chips use an active-voice
+ * register (Live / Shipped / Building / Launching) that states stage only —
+ * no claim about revenue, users, or traction.
+ *
+ * link and metric are deliberately absent until real values exist; a
+ * placeholder would read as fact.
  */
 const ventures = [
   {
     title: 'ChargeBD',
     category: 'CleanTech',
     region: 'Bangladesh',
-    status: 'Delivered',
+    period: '2026',
+    status: 'Shipped',
     tone: 'shipped',
     description:
       'Full-stack bilingual EV charging PWA — map discovery, reservations, live WebSocket sessions, wallet, and admin.',
@@ -25,7 +29,8 @@ const ventures = [
     title: 'Barakah Supply Chain',
     category: 'Consulting',
     region: 'Worldwide',
-    status: 'Launched',
+    period: '2026 – Present',
+    status: 'Live',
     tone: 'shipped',
     description:
       'Co-founded. Targets Amazon sellers across the EU, the Americas, and the GCC.',
@@ -35,7 +40,8 @@ const ventures = [
     title: 'Barakah EPC Solution',
     category: 'Consulting',
     region: 'Worldwide',
-    status: 'Launched',
+    period: '2026 – Present',
+    status: 'Live',
     tone: 'shipped',
     description: 'Program management. Sister line to Barakah Supply Chain.',
     tags: ['Program Management'],
@@ -44,18 +50,19 @@ const ventures = [
     title: 'EV Charging Infrastructure',
     category: 'EV Infrastructure',
     region: 'Bangladesh',
-    status: 'Strategy Delivered',
+    period: '2026',
+    status: 'Shipped',
     tone: 'shipped',
-    // TODO: description needed — no wording supplied. Pull Problem/Solution/Result
-    // from the Career Data Library rather than writing new claims.
-    description: null,
-    tags: [],
+    description:
+      'Market research, supplier evaluation, and business planning to define a viable EV charging deployment model for Bangladesh, delivered as a scalable infrastructure strategy and roadmap.',
+    tags: ['Market Research', 'Supplier Evaluation', 'Business Planning'],
   },
   {
     title: 'Saudi Supply Chain Consulting',
     category: 'Consulting',
     region: 'Saudi Arabia',
-    status: 'MoU Signed · In Progress',
+    period: '2026 – Present',
+    status: 'Launching',
     tone: 'early',
     description: 'Partnership with Infostream.',
     tags: ['Partnership'],
@@ -64,11 +71,12 @@ const ventures = [
     title: 'Show Me on AI',
     category: 'AI SaaS',
     region: 'United States',
-    status: 'In Development',
+    period: '2026 – Present',
+    status: 'Building',
     tone: 'early',
-    // TODO: description needed — no wording supplied.
-    description: null,
-    tags: [],
+    description:
+      'An AI platform that audits how a brand appears and is cited across AI answer engines, surfacing where and how a business gets recommended.',
+    tags: ['AI Answer Engines', 'Brand Audit', 'SaaS'],
   },
 ];
 
@@ -82,6 +90,12 @@ function VentureCard({ venture }) {
       <h4 className="venture-title">{venture.title}</h4>
       <p className="venture-meta">
         {venture.category} <span aria-hidden="true">·</span> {venture.region}
+        {venture.period && (
+          <>
+            {' '}
+            <span aria-hidden="true">·</span> {venture.period}
+          </>
+        )}
       </p>
       {venture.description && <p className="venture-desc">{venture.description}</p>}
       {venture.tags.length > 0 && (
